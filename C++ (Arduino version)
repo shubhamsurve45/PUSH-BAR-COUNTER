@@ -1,0 +1,109 @@
+🔌 TASKS OVERVIEW:
+Push Button Counter
+
+Temperature Sensor Reading and Display
+
+Deliverables: Circuit Diagram, Code, Output Demo
+
+1️⃣ PUSH BUTTON COUNTER
+🔧 Components:
+Arduino UNO
+
+Push button
+
+10kΩ resistor (pull-down)
+
+Breadboard & jumper wires
+
+⚡ Circuit:
+Push button → Digital Pin 2
+
+One side of button → GND
+
+Pull-down resistor (10kΩ) between Pin 2 and GND
+
+👨‍💻 Code:
+cpp
+Copy
+Edit
+int buttonPin = 2;
+int count = 0;
+bool lastButtonState = LOW;
+
+void setup() {
+  pinMode(buttonPin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  bool currentState = digitalRead(buttonPin);
+
+  if (currentState == HIGH && lastButtonState == LOW) {
+    count++;
+    Serial.print("Button Pressed Count: ");
+    Serial.println(count);
+    delay(200);  // Debounce
+  }
+
+  lastButtonState = currentState;
+}
+2️⃣ TEMPERATURE SENSOR READING
+🔧 Components:
+LM35 / DHT11 sensor
+
+Arduino UNO
+
+LCD (16x2) or use Serial Monitor
+
+⚡ Circuit (LM35):
+VCC → 5V
+
+GND → GND
+
+OUT → A0 (analog pin)
+
+👨‍💻 Code with Serial Monitor (LM35):
+cpp
+Copy
+Edit
+int tempPin = A0;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int raw = analogRead(tempPin);
+  float voltage = raw * (5.0 / 1023.0);
+  float temperatureC = voltage * 100;
+
+  Serial.print("Temperature: ");
+  Serial.print(temperatureC);
+  Serial.println(" °C");
+
+  delay(1000);
+}
+📺 OPTIONAL: LCD DISPLAY (16x2)
+Add to setup():
+cpp
+Copy
+Edit
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
+lcd.begin(16, 2);
+In loop():
+cpp
+Copy
+Edit
+lcd.setCursor(0, 0);
+lcd.print("Temp: ");
+lcd.print(temperatureC);
+lcd.print(" C");
+🎯 OUTPUT DEMONSTRATION IDEAS:
+Use Serial Monitor or LCD to show both:
+
+Button Press Count
+
+Real-Time Temperature
+
+Record a video or take screenshots.
